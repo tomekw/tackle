@@ -1,0 +1,22 @@
+with "tackle_config.gpr";
+with "tackle.gpr";
+with "aunit.gpr";
+
+project Tackle_Tests is
+
+   for Source_Dirs use ("tests");
+   for Object_Dir use "target/" & Tackle_Config.Build_Profile & "/obj-tests";
+   for Exec_Dir use "target/" & Tackle_Config.Build_Profile & "/bin";
+   for Main use ("run_tests.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+        Tackle_Config.Ada_Switches &
+        Tackle_Config.Style_Switches;
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("Ada") use ("-Es");
+   end Binder;
+
+end Tackle_Tests;
