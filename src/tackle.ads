@@ -1,5 +1,3 @@
 package Tackle is
-
-   procedure Hello;
-
+   pragma Pure;
 end Tackle;

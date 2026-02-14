@@ -1,15 +1,13 @@
-with Tackle_Test;
+with Tackle_Results_Tests;
 
 package body Tackle_Suite is
 
    Result : aliased AUnit.Test_Suites.Test_Suite;
-   Test_1 : aliased Tackle_Test.Test_Case;
+   Tackle_Results : aliased Tackle_Results_Tests.Test_Case;
 
-   function Suite return AUnit.Test_Suites.Access_Test_Suite
-   is
+   function Suite return AUnit.Test_Suites.Access_Test_Suite is
    begin
-      AUnit.Test_Suites.Add_Test
-        (Result'Access, Test_1'Access);
+      AUnit.Test_Suites.Add_Test (Result'Access, Tackle_Results'Access);
       return Result'Access;
    end Suite;
 
