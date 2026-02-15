@@ -25,5 +25,4 @@ private
    procedure Test_Exception_When_Error_On_Success (Unused_T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Exception_When_Value_On_Failure (Unused_T : in out Test_Cases.Test_Case'Class);
-
 end Tackle_Results_Tests;

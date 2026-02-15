@@ -58,5 +58,4 @@ package body Tackle_Results_Tests is
    begin
       Assert_Exception (Value_On_Failure'Access, "Expected exception");
    end Test_Exception_When_Value_On_Failure;
-
 end Tackle_Results_Tests;
