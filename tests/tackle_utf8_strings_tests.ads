@@ -48,4 +48,6 @@ private
    procedure Test_To_Codepoint_On_Empty (Unused_T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_To_Codepoint_On_Too_Long (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Equals_Codepoint_To_Character (Unused_T : in out Test_Cases.Test_Case'Class);
 end Tackle_UTF8_Strings_Tests;

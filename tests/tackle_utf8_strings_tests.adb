@@ -33,6 +33,7 @@ package body Tackle_UTF8_Strings_Tests is
       Registration.Register_Routine (T, Test_To_Codepoint_On_Multibyte'Access, "Returns a multibyte codepoint");
       Registration.Register_Routine (T, Test_To_Codepoint_On_Empty'Access, "Raises on empty string");
       Registration.Register_Routine (T, Test_To_Codepoint_On_Too_Long'Access, "Raises on too long string");
+      Registration.Register_Routine (T, Test_Equals_Codepoint_To_Character'Access, "Compares Codepoint to Character");
    end Register_Tests;
 
    procedure Test_Empty_String (Unused_T : in out Test_Cases.Test_Case'Class) is
@@ -195,4 +196,13 @@ package body Tackle_UTF8_Strings_Tests is
    begin
       Assert_Exception (To_Codepoint_On_Too_Long'Access, "Expected Encoding_Error raised");
    end Test_To_Codepoint_On_Too_Long;
+
+   procedure Test_Equals_Codepoint_To_Character (Unused_T : in out Test_Cases.Test_Case'Class) is
+      use UTF8_Strings;
+
+      C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint (";");
+   begin
+      Assert (C = ';', "Expected: ;");
+      Assert (C /= ',', "Not expected: ;");
+   end Test_Equals_Codepoint_To_Character;
 end Tackle_UTF8_Strings_Tests;

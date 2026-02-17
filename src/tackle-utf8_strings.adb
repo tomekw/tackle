@@ -165,6 +165,11 @@ package body Tackle.UTF8_Strings is
       end;
    end To_String;
 
+   function "=" (Left : Codepoint; Right : Character) return Boolean is
+   begin
+      return Left = Character'Pos (Right);
+   end "=";
+
    procedure Free is new Unchecked_Deallocation (Byte_Array, Byte_Array_Access);
 
    overriding procedure Finalize (Self : in out UTF8_String) is
