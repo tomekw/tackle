@@ -101,18 +101,20 @@ package body Tackle.UTF8_Strings is
    end Validate;
 
    function From (Source : String) return UTF8_String is
-      Bytes : constant Byte_Array := To_Bytes (Source);
-      Codepoint_Count : constant Natural := Validate (Bytes);
    begin
       return Result : UTF8_String do
-         Result.Bytes := new Byte_Array'(Bytes);
-         Result.Codepoint_Count := Codepoint_Count;
+         Result.Bytes := new Byte_Array'(To_Bytes (Source));
+         Result.Codepoint_Count := Validate (Result.Bytes.all);
       end return;
    end From;
 
    function Byte_Length (Self : UTF8_String) return Natural is
    begin
-      return Self.Bytes.all'Length;
+      if Self.Bytes = null then
+         return 0;
+      else
+         return Self.Bytes.all'Length;
+      end if;
    end Byte_Length;
 
    function Codepoint_Count (Self : UTF8_String) return Natural is

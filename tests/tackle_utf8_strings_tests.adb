@@ -15,6 +15,10 @@ package body Tackle_UTF8_Strings_Tests is
    overriding
    procedure Register_Tests (T : in out Test_Case) is
    begin
+      Registration.Register_Routine (T, Test_Empty_String'Access, "Empty string has zero length and count");
+      Registration.Register_Routine (T, Test_ASCII_String'Access, "ASCII string byte length equals codepoint count");
+      Registration.Register_Routine (T, Test_3_Byte_String'Access, "3-byte codepoint has 3 bytes and 1 codepoint");
+      Registration.Register_Routine (T, Test_Emoji'Access, "4-byte emoji has 4 bytes and 1 codepoint");
       Registration.Register_Routine (T, Test_Byte_Length'Access, "Returns proper byte length");
       Registration.Register_Routine (T, Test_Codepoint_Count'Access, "Returns proper codepoint count");
       Registration.Register_Routine (T, Test_Invalid_Lead_Byte'Access, "Raises on invalid lead byte");
@@ -24,6 +28,36 @@ package body Tackle_UTF8_Strings_Tests is
       Registration.Register_Routine (T, Test_Surrogate_Codepoint'Access, "Raises on surrogate codepoint");
       Registration.Register_Routine (T, Test_Codepoint_Out_Of_Range'Access, "Raises on codepoint out of range");
    end Register_Tests;
+
+   procedure Test_Empty_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : constant UTF8_Strings.UTF8_String := UTF8_Strings.From ("");
+   begin
+      Assert (S.Byte_Length = 0, "Expected Byte_Length: 0");
+      Assert (S.Codepoint_Count = 0, "Expected Codepoint_Count: 0");
+   end Test_Empty_String;
+
+   procedure Test_ASCII_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : constant UTF8_Strings.UTF8_String := UTF8_Strings.From ("ASCII");
+   begin
+      Assert (S.Byte_Length = 5, "Expected Byte_Length: 5");
+      Assert (S.Codepoint_Count = 5, "Expected Codepoint_Count: 5");
+   end Test_ASCII_String;
+
+   procedure Test_3_Byte_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : constant UTF8_Strings.UTF8_String := UTF8_Strings.From
+        ([Character'Val (16#E4#), Character'Val (16#B8#), Character'Val (16#AD#)]);
+   begin
+      Assert (S.Byte_Length = 3, "Expected Byte_Length: 3");
+      Assert (S.Codepoint_Count = 1, "Expected Codepoint_Count: 1");
+   end Test_3_Byte_String;
+
+   procedure Test_Emoji (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : constant UTF8_Strings.UTF8_String := UTF8_Strings.From
+        ([Character'Val (16#F0#), Character'Val (16#9F#), Character'Val (16#98#), Character'Val (16#84#)]);
+   begin
+      Assert (S.Byte_Length = 4, "Expected Byte_Length: 4");
+      Assert (S.Codepoint_Count = 1, "Expected Codepoint_Count: 1");
+   end Test_Emoji;
 
    procedure Test_Byte_Length (Unused_T : in out Test_Cases.Test_Case'Class) is
       S : constant UTF8_Strings.UTF8_String := UTF8_Strings.From ("Cześć");

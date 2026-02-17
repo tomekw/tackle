@@ -13,6 +13,14 @@ package Tackle_UTF8_Strings_Tests is
 
 private
 
+   procedure Test_Empty_String (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_ASCII_String (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_3_Byte_String (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Emoji (Unused_T : in out Test_Cases.Test_Case'Class);
+
    procedure Test_Byte_Length (Unused_T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Codepoint_Count (Unused_T : in out Test_Cases.Test_Case'Class);

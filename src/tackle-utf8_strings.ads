@@ -20,7 +20,7 @@ private
 
    type UTF8_String is new Finalization.Limited_Controlled with record
       Bytes : Byte_Array_Access;
-      Codepoint_Count : Natural;
+      Codepoint_Count : Natural := 0;
    end record;
 
    overriding procedure Finalize (Self : in out UTF8_String);
