@@ -28,6 +28,11 @@ package body Tackle_UTF8_Strings_Tests is
       Registration.Register_Routine (T, Test_Surrogate_Codepoint'Access, "Raises on surrogate codepoint");
       Registration.Register_Routine (T, Test_Codepoint_Out_Of_Range'Access, "Raises on codepoint out of range");
       Registration.Register_Routine (T, Test_To_String'Access, "Returns a proper Ada string");
+      Registration.Register_Routine (T, Test_To_String_On_Empty'Access, "Returns an empty string");
+      Registration.Register_Routine (T, Test_To_Codepoint'Access, "Returns a codepoint");
+      Registration.Register_Routine (T, Test_To_Codepoint_On_Multibyte'Access, "Returns a multibyte codepoint");
+      Registration.Register_Routine (T, Test_To_Codepoint_On_Empty'Access, "Raises on empty string");
+      Registration.Register_Routine (T, Test_To_Codepoint_On_Too_Long'Access, "Raises on too long string");
    end Register_Tests;
 
    procedure Test_Empty_String (Unused_T : in out Test_Cases.Test_Case'Class) is
@@ -146,4 +151,48 @@ package body Tackle_UTF8_Strings_Tests is
    begin
       Assert (S.To_String = Input, "Expected: Cześć");
    end Test_To_String;
+
+   procedure Test_To_String_On_Empty (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : UTF8_Strings.UTF8_String;
+   begin
+      Assert (S.To_String = "", "Expected: empty string");
+   end Test_To_String_On_Empty;
+
+   procedure Test_To_Codepoint (Unused_T : in out Test_Cases.Test_Case'Class) is
+      use UTF8_Strings;
+
+      C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint ("A");
+   begin
+      Assert (C = 16#41#, "Expected: 16#41#");
+   end Test_To_Codepoint;
+
+   procedure Test_To_Codepoint_On_Multibyte (Unused_T : in out Test_Cases.Test_Case'Class) is
+      use UTF8_Strings;
+
+      C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint ("Ą");
+   begin
+      Assert (C = 16#104#, "Expected: 16#104#");
+   end Test_To_Codepoint_On_Multibyte;
+
+   procedure To_Codepoint_On_Empty is
+      Unused_C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint ("");
+   begin
+      null;
+   end To_Codepoint_On_Empty;
+
+   procedure Test_To_Codepoint_On_Empty (Unused_T : in out Test_Cases.Test_Case'Class) is
+   begin
+      Assert_Exception (To_Codepoint_On_Empty'Access, "Expected Encoding_Error raised");
+   end Test_To_Codepoint_On_Empty;
+
+   procedure To_Codepoint_On_Too_Long is
+      Unused_C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint ("Hello");
+   begin
+      null;
+   end To_Codepoint_On_Too_Long;
+
+   procedure Test_To_Codepoint_On_Too_Long (Unused_T : in out Test_Cases.Test_Case'Class) is
+   begin
+      Assert_Exception (To_Codepoint_On_Too_Long'Access, "Expected Encoding_Error raised");
+   end Test_To_Codepoint_On_Too_Long;
 end Tackle_UTF8_Strings_Tests;

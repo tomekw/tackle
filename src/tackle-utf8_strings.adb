@@ -30,6 +30,62 @@ package body Tackle.UTF8_Strings is
 
    type Codepoint_Internal is new Interfaces.Unsigned_32;
 
+   function Continuation_Bits (B : Byte) return Codepoint_Internal is
+   begin
+      return Codepoint_Internal (B and 2#0011_1111#);
+   end Continuation_Bits;
+
+   function Decode (Bytes : Byte_Array; Position : Positive) return Codepoint is
+      Lead_Byte : constant Byte := Bytes (Position);
+      Length : constant UTF8_Sequence_Length := Sequence_Length (Lead_Byte);
+      CP : Codepoint_Internal;
+   begin
+      for Offset in 1 .. Positive (Length) - 1 loop
+         if (Bytes (Position + Offset) and 2#1100_0000#) /= 2#1000_0000# then
+            raise Encoding_Error with "invalid continuation byte";
+         end if;
+      end loop;
+
+      case Length is
+         when 1 =>
+            CP := Codepoint_Internal (Lead_Byte and 2#0111_1111#);
+         when 2 =>
+            CP := Shift_Left (Codepoint_Internal (Lead_Byte and 2#0001_1111#), 6) or
+                  Continuation_Bits (Bytes (Position + 1));
+
+            if CP < 16#0080# then
+               raise Encoding_Error with "overlong encoding";
+            end if;
+         when 3 =>
+            CP := Shift_Left (Codepoint_Internal (Lead_Byte and 2#0000_1111#), 12) or
+                  Shift_Left (Continuation_Bits (Bytes (Position + 1)), 6) or
+                  Continuation_Bits (Bytes (Position + 2));
+
+            if CP < 16#0800# then
+               raise Encoding_Error with "overlong encoding";
+            end if;
+         when 4 =>
+            CP := Shift_Left (Codepoint_Internal (Lead_Byte and 2#0000_0111#), 18) or
+                  Shift_Left (Continuation_Bits (Bytes (Position + 1)), 12) or
+                  Shift_Left (Continuation_Bits (Bytes (Position + 2)), 6) or
+                  Continuation_Bits (Bytes (Position + 3));
+
+            if CP < 16#1_0000# then
+               raise Encoding_Error with "overlong encoding";
+            end if;
+      end case;
+
+      if CP in 16#D800# .. 16#DFFF# then
+         raise Encoding_Error with "surrogate codepoint";
+      end if;
+
+      if CP > 16#10_FFFF# then
+         raise Encoding_Error with "codepoint out of range";
+      end if;
+
+      return Codepoint (CP);
+   end Decode;
+
    function Validate (Bytes : Byte_Array) return Natural is
       Position : Positive := Bytes'First;
       Codepoint_Count : Natural := 0;
@@ -38,59 +94,13 @@ package body Tackle.UTF8_Strings is
          declare
             Lead_Byte : constant Byte := Bytes (Position);
             Length : constant UTF8_Sequence_Length := Sequence_Length (Lead_Byte);
-            CP : Codepoint_Internal;
-
-            function Continuation_Codepoint (Offset : Positive) return Codepoint_Internal is
-            begin
-               return Codepoint_Internal (Bytes (Position + Offset) and 2#0011_1111#);
-            end Continuation_Codepoint;
+            Unused_Codepoint : Codepoint;
          begin
             if Position + Positive (Length) - 1 > Bytes'Last then
                raise Encoding_Error with "truncated byte sequence";
             end if;
 
-            for Offset in 1 .. Positive (Length) - 1 loop
-               if (Bytes (Position + Offset) and 2#1100_0000#) /= 2#1000_0000# then
-                  raise Encoding_Error with "invalid continuation byte";
-               end if;
-            end loop;
-
-            case Length is
-               when 1 =>
-                  CP := Codepoint_Internal (Lead_Byte and 2#0111_1111#);
-               when 2 =>
-                  CP := Shift_Left (Codepoint_Internal (Lead_Byte and 2#0001_1111#), 6) or
-                        Continuation_Codepoint (1);
-
-                  if CP < 16#0080# then
-                     raise Encoding_Error with "overlong encoding";
-                  end if;
-               when 3 =>
-                  CP := Shift_Left (Codepoint_Internal (Lead_Byte and 2#0000_1111#), 12) or
-                        Shift_Left (Continuation_Codepoint (1), 6) or
-                        Continuation_Codepoint (2);
-
-                  if CP < 16#0800# then
-                     raise Encoding_Error with "overlong encoding";
-                  end if;
-               when 4 =>
-                  CP := Shift_Left (Codepoint_Internal (Lead_Byte and 2#0000_0111#), 18) or
-                        Shift_Left (Continuation_Codepoint (1), 12) or
-                        Shift_Left (Continuation_Codepoint (2), 6) or
-                        Continuation_Codepoint (3);
-
-                  if CP < 16#1_0000# then
-                     raise Encoding_Error with "overlong encoding";
-                  end if;
-            end case;
-
-            if CP in 16#D800# .. 16#DFFF# then
-               raise Encoding_Error with "surrogate codepoint";
-            end if;
-
-            if CP > 16#10_FFFF# then
-               raise Encoding_Error with "codepoint out of range";
-            end if;
+            Unused_Codepoint := Decode (Bytes, Position);
 
             Codepoint_Count := Codepoint_Count + 1;
             Position := Position + Positive (Length);
@@ -108,13 +118,31 @@ package body Tackle.UTF8_Strings is
       end return;
    end From;
 
+   function To_Codepoint (Source : String) return Codepoint is
+   begin
+      if Source'Length = 0 then
+         raise Encoding_Error with "expected exactly one codepoint";
+      end if;
+
+      declare
+         Bytes     : constant Byte_Array := To_Bytes (Source);
+         Length    : constant UTF8_Sequence_Length := Sequence_Length (Bytes (Bytes'First));
+      begin
+         if Positive (Length) /= Bytes'Length then
+            raise Encoding_Error with "expected exactly one codepoint";
+         end if;
+
+         return Decode (Bytes, Bytes'First);
+      end;
+   end To_Codepoint;
+
    function Byte_Length (Self : UTF8_String) return Natural is
    begin
       if Self.Bytes = null then
          return 0;
-      else
-         return Self.Bytes.all'Length;
       end if;
+
+      return Self.Bytes.all'Length;
    end Byte_Length;
 
    function Codepoint_Count (Self : UTF8_String) return Natural is
@@ -123,15 +151,18 @@ package body Tackle.UTF8_Strings is
    end Codepoint_Count;
 
    function To_String (Self : UTF8_String) return String is
-      subtype Result_Bytes  is Byte_Array (Self.Bytes'Range);
-      subtype Result_String is String (Self.Bytes'Range);
-      function Convert is new Unchecked_Conversion (Result_Bytes, Result_String);
    begin
       if Self.Bytes = null then
          return "";
-      else
-         return Convert (Self.Bytes.all);
       end if;
+
+      declare
+         subtype Result_Bytes  is Byte_Array (Self.Bytes'Range);
+         subtype Result_String is String (Self.Bytes'Range);
+         function Convert is new Unchecked_Conversion (Result_Bytes, Result_String);
+      begin
+         return Convert (Self.Bytes.all);
+      end;
    end To_String;
 
    procedure Free is new Unchecked_Deallocation (Byte_Array, Byte_Array_Access);

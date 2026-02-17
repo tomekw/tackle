@@ -38,4 +38,14 @@ private
    procedure Test_Codepoint_Out_Of_Range (Unused_T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_To_String (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_To_String_On_Empty (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_To_Codepoint (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_To_Codepoint_On_Multibyte (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_To_Codepoint_On_Empty (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_To_Codepoint_On_Too_Long (Unused_T : in out Test_Cases.Test_Case'Class);
 end Tackle_UTF8_Strings_Tests;

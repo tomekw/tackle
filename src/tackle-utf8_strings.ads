@@ -5,9 +5,13 @@ package Tackle.UTF8_Strings is
 
    Encoding_Error : exception;
 
+   type Codepoint is range 0 .. 16#10_FFFF#;
+
    type UTF8_String is new Finalization.Limited_Controlled with private;
 
    function From (Source : String) return UTF8_String;
+
+   function To_Codepoint (Source : String) return Codepoint;
 
    function Byte_Length (Self : UTF8_String) return Natural;
 
