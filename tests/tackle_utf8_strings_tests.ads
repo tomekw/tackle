@@ -16,4 +16,16 @@ private
    procedure Test_Byte_Length (Unused_T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Codepoint_Count (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Invalid_Lead_Byte (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Truncated_Byte_Sequence (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Invalid_Continuation_Byte (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Overlong_Encoding (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Surrogate_Codepoint (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Codepoint_Out_Of_Range (Unused_T : in out Test_Cases.Test_Case'Class);
 end Tackle_UTF8_Strings_Tests;
