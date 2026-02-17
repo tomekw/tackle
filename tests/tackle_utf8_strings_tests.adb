@@ -34,6 +34,11 @@ package body Tackle_UTF8_Strings_Tests is
       Registration.Register_Routine (T, Test_To_Codepoint_On_Empty'Access, "Raises on empty string");
       Registration.Register_Routine (T, Test_To_Codepoint_On_Too_Long'Access, "Raises on too long string");
       Registration.Register_Routine (T, Test_Equals_Codepoint_To_Character'Access, "Compares Codepoint to Character");
+      Registration.Register_Routine (T, Test_1_Byte_Codepoint_To_String'Access, "Returns 1 byte String");
+      Registration.Register_Routine (T, Test_2_Bytes_Codepoint_To_String'Access, "Returns 2 byte String");
+      Registration.Register_Routine (T, Test_3_Bytes_Codepoint_To_String'Access, "Returns 3 byte String");
+      Registration.Register_Routine (T, Test_4_Bytes_Codepoint_To_String'Access, "Returns 4 byte String");
+      Registration.Register_Routine (T, Test_Surrogate_Codepoint_To_String'Access, "Raises on surrogate codepoint");
    end Register_Tests;
 
    procedure Test_Empty_String (Unused_T : in out Test_Cases.Test_Case'Class) is
@@ -205,4 +210,48 @@ package body Tackle_UTF8_Strings_Tests is
       Assert (C = ';', "Expected: ;");
       Assert (C /= ',', "Not expected: ;");
    end Test_Equals_Codepoint_To_Character;
+
+   procedure Test_1_Byte_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : constant String := "A";
+      C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint (S);
+   begin
+      Assert (UTF8_Strings.To_String (C) = S, "Expected: " & S);
+   end Test_1_Byte_Codepoint_To_String;
+
+   procedure Test_2_Bytes_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : constant String := "Ą";
+      C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint (S);
+   begin
+      Assert (UTF8_Strings.To_String (C) = S, "Expected: " & S);
+   end Test_2_Bytes_Codepoint_To_String;
+
+   procedure Test_3_Bytes_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : constant String :=
+        [Character'Val (16#E4#), Character'Val (16#B8#), Character'Val (16#AD#)];
+      C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint (S);
+   begin
+      Assert (UTF8_Strings.To_String (C) = S, "Expected: " & S);
+   end Test_3_Bytes_Codepoint_To_String;
+
+   procedure Test_4_Bytes_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+      S : constant String :=
+        [Character'Val (16#F0#), Character'Val (16#9F#), Character'Val (16#98#), Character'Val (16#84#)];
+      C : constant UTF8_Strings.Codepoint := UTF8_Strings.To_Codepoint (S);
+   begin
+      Assert (UTF8_Strings.To_String (C) = S, "Expected: " & S);
+   end Test_4_Bytes_Codepoint_To_String;
+
+   procedure Surrogate_Codepoint_To_String is
+      use UTF8_Strings;
+
+      C : constant UTF8_Strings.Codepoint := Codepoint (16#D800#);
+      Unused_S : constant String := UTF8_Strings.To_String (C);
+   begin
+      null;
+   end Surrogate_Codepoint_To_String;
+
+   procedure Test_Surrogate_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+   begin
+      Assert_Exception (Surrogate_Codepoint_To_String'Access, "Expected Encoding_Error raised");
+   end Test_Surrogate_Codepoint_To_String;
 end Tackle_UTF8_Strings_Tests;

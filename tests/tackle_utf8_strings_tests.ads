@@ -50,4 +50,14 @@ private
    procedure Test_To_Codepoint_On_Too_Long (Unused_T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Equals_Codepoint_To_Character (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_1_Byte_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_2_Bytes_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_3_Bytes_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_4_Bytes_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Surrogate_Codepoint_To_String (Unused_T : in out Test_Cases.Test_Case'Class);
 end Tackle_UTF8_Strings_Tests;

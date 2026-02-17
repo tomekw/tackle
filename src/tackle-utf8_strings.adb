@@ -136,6 +136,30 @@ package body Tackle.UTF8_Strings is
       end;
    end To_Codepoint;
 
+   function To_String (CP : Codepoint) return String is
+      CP_Internal : constant Codepoint_Internal := Codepoint_Internal (CP);
+   begin
+      if CP_Internal in 16#D800# .. 16#DFFF# then
+         raise Encoding_Error with "surrogate codepoint";
+      end if;
+
+      if CP_Internal <= 16#7F# then
+         return [Character'Val (CP_Internal)];
+      elsif CP_Internal <= 16#7FF# then
+         return [Character'Val (Shift_Right (CP_Internal, 6) or 2#1100_0000#),
+                  Character'Val ((CP_Internal and 2#0011_1111#) or 2#1000_0000#)];
+      elsif CP_Internal <= 16#FFFF# then
+         return [Character'Val (Shift_Right (CP_Internal, 12) or 2#1110_0000#),
+                  Character'Val ((Shift_Right (CP_Internal, 6) and 2#0011_1111#) or 2#1000_0000#),
+                  Character'Val ((CP_Internal and 2#0011_1111#) or 2#1000_0000#)];
+      else
+         return [Character'Val (Shift_Right (CP_Internal, 18) or 2#1111_0000#),
+                  Character'Val ((Shift_Right (CP_Internal, 12) and 2#0011_1111#) or 2#1000_0000#),
+                  Character'Val ((Shift_Right (CP_Internal, 6) and 2#0011_1111#) or 2#1000_0000#),
+                  Character'Val ((CP_Internal and 2#0011_1111#) or 2#1000_0000#)];
+      end if;
+   end To_String;
+
    function Byte_Length (Self : UTF8_String) return Natural is
    begin
       if Self.Bytes = null then

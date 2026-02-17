@@ -13,6 +13,8 @@ package Tackle.UTF8_Strings is
 
    function To_Codepoint (Source : String) return Codepoint;
 
+   function To_String (CP : Codepoint) return String;
+
    function Byte_Length (Self : UTF8_String) return Natural;
 
    function Codepoint_Count (Self : UTF8_String) return Natural;
