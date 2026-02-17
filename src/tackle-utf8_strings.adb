@@ -125,8 +125,8 @@ package body Tackle.UTF8_Strings is
       end if;
 
       declare
-         Bytes     : constant Byte_Array := To_Bytes (Source);
-         Length    : constant UTF8_Sequence_Length := Sequence_Length (Bytes (Bytes'First));
+         Bytes : constant Byte_Array := To_Bytes (Source);
+         Length : constant UTF8_Sequence_Length := Sequence_Length (Bytes (Bytes'First));
       begin
          if Positive (Length) /= Bytes'Length then
             raise Encoding_Error with "expected exactly one codepoint";
