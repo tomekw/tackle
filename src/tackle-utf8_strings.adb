@@ -122,6 +122,18 @@ package body Tackle.UTF8_Strings is
       return Self.Codepoint_Count;
    end Codepoint_Count;
 
+   function To_String (Self : UTF8_String) return String is
+      subtype Result_Bytes  is Byte_Array (Self.Bytes'Range);
+      subtype Result_String is String (Self.Bytes'Range);
+      function Convert is new Unchecked_Conversion (Result_Bytes, Result_String);
+   begin
+      if Self.Bytes = null then
+         return "";
+      else
+         return Convert (Self.Bytes.all);
+      end if;
+   end To_String;
+
    procedure Free is new Unchecked_Deallocation (Byte_Array, Byte_Array_Access);
 
    overriding procedure Finalize (Self : in out UTF8_String) is

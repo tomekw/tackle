@@ -12,6 +12,8 @@ package Tackle.UTF8_Strings is
    function Byte_Length (Self : UTF8_String) return Natural;
 
    function Codepoint_Count (Self : UTF8_String) return Natural;
+
+   function To_String (Self : UTF8_String) return String;
 private
 
    type Byte is mod 2 ** 8;

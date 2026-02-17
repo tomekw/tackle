@@ -36,4 +36,6 @@ private
    procedure Test_Surrogate_Codepoint (Unused_T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Codepoint_Out_Of_Range (Unused_T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_To_String (Unused_T : in out Test_Cases.Test_Case'Class);
 end Tackle_UTF8_Strings_Tests;

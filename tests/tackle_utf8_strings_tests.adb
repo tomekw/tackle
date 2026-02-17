@@ -27,6 +27,7 @@ package body Tackle_UTF8_Strings_Tests is
       Registration.Register_Routine (T, Test_Overlong_Encoding'Access, "Raises on overlong encoding");
       Registration.Register_Routine (T, Test_Surrogate_Codepoint'Access, "Raises on surrogate codepoint");
       Registration.Register_Routine (T, Test_Codepoint_Out_Of_Range'Access, "Raises on codepoint out of range");
+      Registration.Register_Routine (T, Test_To_String'Access, "Returns a proper Ada string");
    end Register_Tests;
 
    procedure Test_Empty_String (Unused_T : in out Test_Cases.Test_Case'Class) is
@@ -138,4 +139,11 @@ package body Tackle_UTF8_Strings_Tests is
    begin
       Assert_Exception (Codepoint_Out_Of_Range'Access, "Expected Encoding_Error raised");
    end Test_Codepoint_Out_Of_Range;
+
+   procedure Test_To_String (Unused_T : in out Test_Cases.Test_Case'Class) is
+      Input : constant String := "Cześć";
+      S : constant UTF8_Strings.UTF8_String := UTF8_Strings.From (Input);
+   begin
+      Assert (S.To_String = Input, "Expected: Cześć");
+   end Test_To_String;
 end Tackle_UTF8_Strings_Tests;
