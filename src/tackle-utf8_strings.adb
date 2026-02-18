@@ -1,6 +1,5 @@
 with Ada.Unchecked_Conversion;
 with Ada.Unchecked_Deallocation;
-with Interfaces;
 
 package body Tackle.UTF8_Strings is
    function To_Bytes (Source : String) return Byte_Array is
@@ -10,8 +9,6 @@ package body Tackle.UTF8_Strings is
    begin
       return Convert (Source);
    end To_Bytes;
-
-   type UTF8_Sequence_Length is range 1 .. 4;
 
    function Sequence_Length (Lead_Byte : Byte) return UTF8_Sequence_Length is
    begin
@@ -27,8 +24,6 @@ package body Tackle.UTF8_Strings is
          raise Encoding_Error with "invalid lead byte";
       end if;
    end Sequence_Length;
-
-   type Codepoint_Internal is new Interfaces.Unsigned_32;
 
    function Continuation_Bits (B : Byte) return Codepoint_Internal is
    begin

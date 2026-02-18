@@ -1,4 +1,5 @@
 with Ada.Finalization;
+with Interfaces;
 
 package Tackle.UTF8_Strings is
    use Ada;
@@ -32,6 +33,14 @@ private
       Bytes : Byte_Array_Access;
       Codepoint_Count : Natural := 0;
    end record;
+
+   type UTF8_Sequence_Length is range 1 .. 4;
+
+   function Sequence_Length (Lead_Byte : Byte) return UTF8_Sequence_Length;
+
+   type Codepoint_Internal is new Interfaces.Unsigned_32;
+
+   function Continuation_Bits (B : Byte) return Codepoint_Internal;
 
    overriding procedure Finalize (Self : in out UTF8_String);
 end Tackle.UTF8_Strings;
