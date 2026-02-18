@@ -8,7 +8,7 @@ package Tackle.UTF8_Strings is
 
    type Codepoint is range 0 .. 16#10_FFFF#;
 
-   type UTF8_String is new Finalization.Limited_Controlled with private;
+   type UTF8_String is new Finalization.Controlled with private;
 
    function From (Source : String) return UTF8_String;
 
@@ -29,7 +29,7 @@ private
    type Byte_Array is array (Positive range <>) of Byte;
    type Byte_Array_Access is access Byte_Array;
 
-   type UTF8_String is new Finalization.Limited_Controlled with record
+   type UTF8_String is new Finalization.Controlled with record
       Bytes : Byte_Array_Access;
       Codepoint_Count : Natural := 0;
    end record;
@@ -41,6 +41,8 @@ private
    type Codepoint_Internal is new Interfaces.Unsigned_32;
 
    function Continuation_Bits (B : Byte) return Codepoint_Internal;
+
+   overriding procedure Adjust (Self : in out UTF8_String);
 
    overriding procedure Finalize (Self : in out UTF8_String);
 end Tackle.UTF8_Strings;

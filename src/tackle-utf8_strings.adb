@@ -189,6 +189,13 @@ package body Tackle.UTF8_Strings is
       return Left = Character'Pos (Right);
    end "=";
 
+   overriding procedure Adjust (Self : in out UTF8_String) is
+   begin
+      if Self.Bytes /= null then
+         Self.Bytes := new Byte_Array'(Self.Bytes.all);
+      end if;
+   end Adjust;
+
    procedure Free is new Unchecked_Deallocation (Byte_Array, Byte_Array_Access);
 
    overriding procedure Finalize (Self : in out UTF8_String) is
