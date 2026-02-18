@@ -17,7 +17,7 @@ The best is to use it with [tada](https://github.com/tomekw/tada). Tada doesn't 
 For now, it provides these packages:
 
 * `Tackle.Results` - generic `Result` type. `Success` and `Failure`. For now, read the package spec.
-* `Tackle.UTF8_Strings` - UTF8 strings in Ada. Use `String` as a literal vehicle and for IO. `UTF8_String` is eagerly validated for truncated sequences, proper continuation bytes, overlong encoding, surrogate and range checks. Raises `Encoding_Error` if invalid. For now, read the package spec.
+* `Tackle.UTF8_Strings` - UTF8 strings in Ada. Use `String` as a literal vehicle and for IO. `UTF8_String` is eagerly validated for truncated sequences, improper continuation bytes, overlong encoding, surrogate and range checks. Raises `Encoding_Error` if invalid. For now, read the package spec.
 * `Tackle.UTF8_Strings.Codepoint_Iterators` - (soon) - `Ada.Containers`-like `Cursor` API to traverse `UTF8_String` codepoint by codepoint.
 
 ## Building
