@@ -1,4 +1,5 @@
 with "tackle_config.gpr";
+with "tackle_deps.gpr";
 
 project Tackle is
 
