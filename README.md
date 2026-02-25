@@ -1,6 +1,6 @@
 # Tackle
 
-Or TACkLe. Or Tomek's Ada Class Library. Eveyrthing I find useful and I think should be a part of the (extended) standard library.
+Or TACkLe. Or Tomek's Ada Class Library. Everything I find useful and I think should be a part of the (extended) standard library.
 
 ## Status
 
