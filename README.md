@@ -1,4 +1,4 @@
-# Tackle
+# Tackle [![Tests](https://github.com/tomekw/tackle/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/tomekw/tackle/actions/workflows/test.yml)
 
 Or TACkLe. Or Tomek's Ada Class Library. Everything I find useful and I think should be a part of the (extended) standard library.
 
