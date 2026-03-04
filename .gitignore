@@ -1,2 +1,3 @@
 target/
 tackle_deps.gpr
+tackle_tests_deps.gpr

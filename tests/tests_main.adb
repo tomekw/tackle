@@ -2,7 +2,7 @@ with AUnit.Run;
 with AUnit.Reporter.Text;
 with Tackle_Suite;
 
-procedure Run_Tests is
+procedure Tests_Main is
 
    procedure Runner is new AUnit.Run.Test_Runner
      (Tackle_Suite.Suite);
@@ -11,4 +11,4 @@ procedure Run_Tests is
 
 begin
    Runner (Reporter);
-end Run_Tests;
+end Tests_Main;
