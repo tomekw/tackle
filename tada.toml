@@ -3,3 +3,6 @@ name = "tackle"
 version = "0.1.0"
 
 [dependencies]
+
+[dev-dependencies]
+testy = "0.1.0"

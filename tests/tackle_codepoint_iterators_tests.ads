@@ -1,27 +1,17 @@
-with AUnit.Test_Cases;
+with Testy.Tests;
 
 package Tackle_Codepoint_Iterators_Tests is
-   use AUnit;
+   use Testy.Tests;
 
-   type Test_Case is new Test_Cases.Test_Case with null record;
+   procedure Test_First_On_Empty_String (T : in out Test_Context);
 
-   overriding
-   function Name (Unused_T : Test_Case) return Message_String;
+   procedure Test_Has_Element_On_No_Element (T : in out Test_Context);
 
-   overriding
-   procedure Register_Tests (T : in out Test_Case);
+   procedure Test_Next_On_No_Element (T : in out Test_Context);
 
-private
+   procedure Test_Element_On_No_Element (T : in out Test_Context);
 
-   procedure Test_First_On_Empty_String (Unused_T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Iterate_Over_ASCII (T : in out Test_Context);
 
-   procedure Test_Has_Element_On_No_Element (Unused_T : in out Test_Cases.Test_Case'Class);
-
-   procedure Test_Next_On_No_Element (Unused_T : in out Test_Cases.Test_Case'Class);
-
-   procedure Test_Element_On_No_Element (Unused_T : in out Test_Cases.Test_Case'Class);
-
-   procedure Test_Iterate_Over_ASCII (Unused_T : in out Test_Cases.Test_Case'Class);
-
-   procedure Test_Iterate_Over_Mixed (Unused_T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Iterate_Over_Mixed (T : in out Test_Context);
 end Tackle_Codepoint_Iterators_Tests;

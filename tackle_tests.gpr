@@ -1,6 +1,6 @@
 with "tackle_config.gpr";
+with "tackle_tests_deps.gpr";
 with "tackle.gpr";
-with "aunit.gpr";
 
 project Tackle_Tests is
 
