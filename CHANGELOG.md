@@ -1,5 +1,7 @@
 ## unreleased
 
+* remove `Tackle.Results`
+
 ## 0.1.0
 
 * `Tackle.Results`
