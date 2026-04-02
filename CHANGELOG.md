@@ -1,10 +1,11 @@
 ## unreleased
 
-* remove `Tackle.Results`
+* add `Tackle.MIME`
 * add `Tackle.Targets`
+* remove `Tackle.Results`
 
 ## 0.1.0
 
-* `Tackle.Results`
-* `Tackle.UTF8_Strings`
-* `Tackle.UTF8_Strings.Codepoint_Iterators`
+* add `Tackle.Results`
+* add `Tackle.UTF8_Strings`
+* add `Tackle.UTF8_Strings.Codepoint_Iterators`

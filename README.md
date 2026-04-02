@@ -16,11 +16,44 @@ The best is to use it with [tada](https://github.com/tomekw/tada).
 
 For now, it provides these packages:
 
-* `Tackle.Targets` - Architecture and Operating system information.
+* `Tackle.MIME` - curated MIME type database.
+
+  ``` ada
+  with Ada.Text_IO;
+  with Tackle.MIME
+
+  procedure Demo is
+     use Ada;
+     use Tackle;
+
+     Mime_DB : constant MIME.Database := MIME.Init;
+  begin
+     Text_IO.Put_Line (Mime_DB.Mime_Type ("txt")); --  "text/plain"
+     Text_IO.Put_Line (Mime_DB.Mime_Type ("foo", "foo/bar")); --  "foo/bar"
+  end Demo;
+  ```
+
+* `Tackle.Targets` - architecture and operating system information.
+
+  ``` ada
+  with Ada.Text_IO;
+  with Tackle.Targets
+
+  procedure Demo is
+     use Ada;
+     use Tackle;
+
+     Target_Info : constant Targets.Target := Targets.Init;
+  begin
+     Text_IO.Put_Line (Target_Info.Architecture'Image); --  "x86_64"
+     Text_IO.Put_Line (Target_Info.Operating_System'Image); --  "openbsd"
+  end Demo;
+  ```
+
 * `Tackle.UTF8_Strings` - UTF8 strings in Ada. Use `String` as a literal vehicle and for IO. `UTF8_String` is eagerly validated for truncated sequences, improper continuation bytes, overlong encoding, surrogate and range checks. Raises `Encoding_Error` if invalid. For now, read the package spec.
 * `Tackle.UTF8_Strings.Codepoint_Iterators` - `Ada.Containers`-like `Cursor` API to traverse `UTF8_String` codepoint by codepoint.  Example:
 
-  ```ada
+  ``` ada
   with Ada.Text_IO;
   with Tackle.UTF8_Strings;
   with Tackle.UTF8_Strings.Codepoint_Iterators;

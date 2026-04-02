@@ -2,6 +2,7 @@ with Testy.Runners;
 with Testy.Reporters.Text;
 
 with Tackle_Codepoint_Iterators_Tests;
+with Tackle_MIME_Tests;
 with Tackle_Targets_Tests;
 with Tackle_UTF8_Strings_Tests;
 
@@ -23,6 +24,13 @@ begin
                     Tackle_Codepoint_Iterators_Tests.Test_Iterate_Over_ASCII'Access);
    Test_Runner.Add ("Iterate over mixed string returns each X byte codepoint",
                     Tackle_Codepoint_Iterators_Tests.Test_Iterate_Over_Mixed'Access);
+
+   Test_Runner.Add ("Mime_Type returns mime type for extension",
+                    Tackle_MIME_Tests.Test_MIME_Exists'Access);
+   Test_Runner.Add ("Mime_Type returns empty string when extension doesn't exist",
+                    Tackle_MIME_Tests.Test_MIME_Does_Not_Exist'Access);
+   Test_Runner.Add ("Mime_Type returns default fallback when extension doesn't exist when default provided",
+                    Tackle_MIME_Tests.Test_MIME_Does_Not_Exist_With_Default'Access);
 
    Test_Runner.Add ("Target returns proper Architecture and Operating_System",
                     Tackle_Targets_Tests.Test_Target_Info'Access);
@@ -57,7 +65,7 @@ begin
                     Tackle_UTF8_Strings_Tests.Test_To_String_On_Empty'Access);
    Test_Runner.Add ("To_Codepoint returns a codepoint",
                     Tackle_UTF8_Strings_Tests.Test_To_Codepoint'Access);
-   Test_Runner.Add ("To_Codepoint returns a multibyte codepoint",
+   Test_Runner.Add ("To_Codepoint returns y a multibyte codepoint",
                     Tackle_UTF8_Strings_Tests.Test_To_Codepoint_On_Multibyte'Access);
    Test_Runner.Add ("To_Codepoint raises Encoding_Error on empty string",
                     Tackle_UTF8_Strings_Tests.Test_To_Codepoint_On_Empty'Access);
