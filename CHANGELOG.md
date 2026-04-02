@@ -1,6 +1,7 @@
 ## unreleased
 
 * remove `Tackle.Results`
+* add `Tackle.Targets`
 
 ## 0.1.0
 

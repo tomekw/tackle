@@ -2,6 +2,7 @@ with Testy.Runners;
 with Testy.Reporters.Text;
 
 with Tackle_Codepoint_Iterators_Tests;
+with Tackle_Targets_Tests;
 with Tackle_UTF8_Strings_Tests;
 
 procedure Tests_Main is
@@ -22,6 +23,9 @@ begin
                     Tackle_Codepoint_Iterators_Tests.Test_Iterate_Over_ASCII'Access);
    Test_Runner.Add ("Iterate over mixed string returns each X byte codepoint",
                     Tackle_Codepoint_Iterators_Tests.Test_Iterate_Over_Mixed'Access);
+
+   Test_Runner.Add ("Target returns proper Architecture and Operating_System",
+                    Tackle_Targets_Tests.Test_Target_Info'Access);
 
    Test_Runner.Add ("Empty string has zero Length and Codepoint_Count",
                     Tackle_UTF8_Strings_Tests.Test_Empty_String'Access);
