@@ -1,5 +1,7 @@
 ## unreleased
 
+## 0.2.0
+
 * add `Tackle.MIME`
 * add `Tackle.Targets`
 * remove `Tackle.Results`
