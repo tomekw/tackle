@@ -1,5 +1,7 @@
 ## unreleased
 
+* add `Tackle.Opts`
+
 ## 0.2.0
 
 * add `Tackle.MIME`

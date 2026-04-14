@@ -3,6 +3,7 @@ with Testy.Reporters.Text;
 
 with Tackle_Codepoint_Iterators_Tests;
 with Tackle_MIME_Tests;
+with Tackle_Opts_Tests;
 with Tackle_Targets_Tests;
 with Tackle_UTF8_Strings_Tests;
 
@@ -31,6 +32,15 @@ begin
                     Tackle_MIME_Tests.Test_MIME_Does_Not_Exist'Access);
    Test_Runner.Add ("Mime_Type returns default fallback when extension doesn't exist when default provided",
                     Tackle_MIME_Tests.Test_MIME_Does_Not_Exist_With_Default'Access);
+
+   Test_Runner.Add ("Valid Options return Result", Tackle_Opts_Tests.Test_Valid_Options'Access);
+   Test_Runner.Add ("Invalid Option raises Option_Error", Tackle_Opts_Tests.Test_Invalid_Option'Access);
+   Test_Runner.Add ("Missing argument raises Option_Error", Tackle_Opts_Tests.Test_Missing_Argument'Access);
+   Test_Runner.Add ("Missing arguments raise Option_Error", Tackle_Opts_Tests.Test_Missing_Arguments'Access);
+   Test_Runner.Add ("Invalid Option raises Option_Error", Tackle_Opts_Tests.Test_Invalid_Option'Access);
+
+   Test_Runner.Add ("Valid Commands return Result", Tackle_Opts_Tests.Test_Valid_Commands'Access);
+   Test_Runner.Add ("Invalid passthrough raises Option_Error", Tackle_Opts_Tests.Test_Invalid_Passthrough'Access);
 
    Test_Runner.Add ("Target returns proper Architecture and Operating_System",
                     Tackle_Targets_Tests.Test_Target_Info'Access);

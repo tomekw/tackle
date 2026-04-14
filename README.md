@@ -16,7 +16,9 @@ The best is to use it with [tada](https://github.com/tomekw/tada).
 
 For now, it provides these packages:
 
-* `Tackle.MIME` - curated MIME type database.
+### `Tackle.MIME`
+
+A curated MIME type database.
 
   ``` ada
   with Ada.Text_IO;
@@ -33,7 +35,118 @@ For now, it provides these packages:
   end Demo;
   ```
 
-* `Tackle.Targets` - architecture and operating system information.
+### `Tackle.Opts`
+
+Declarative command line arguments parser.
+
+Options:
+
+  ``` ada
+  with Ada.Text_IO;
+  with Tackle.Opts;
+
+  procedure Opts_Demo is
+     use Ada;
+     use Tackle;
+
+     Options : constant Opts.Option_List := [Opts.Arg ("alpha", 'a', "Do alpha stuff"),
+                                             Opts.Arg ("beta",  'b', "Do beta stuff"),
+                                             Opts.Flag ("charlie", 'c', "Has charlie flag")];
+
+     Arguments : constant Opts.Argument_List := Opts.Consume_Arguments;
+
+     Result : constant Opts.Result := Opts.Parse (Arguments, Options);
+  begin
+     --  Help is implicit unless provided
+     if Result.Has_Flag ("help") then
+        Opts.Print_Usage ("opts_demo", Options);
+
+        return;
+     end if;
+
+     Text_IO.Put_Line ("Alpha: " & Result.Arg ("alpha"));
+     Text_IO.Put_Line ("Beta: " & Result.Arg ("beta"));
+     Text_IO.Put_Line ("Charlie?: " & Result.Has_Flag ("beta")'Image);
+  end Opts_Demo;
+  ```
+
+  ``` shell
+  $ ./opts_demo --help
+  Usage: opts_demo [options]
+
+  Options:
+    --alpha, -a <alpha>   Do alpha stuff
+    --beta, -b <beta>     Do beta stuff
+    --charlie, -c         Has charlie flag
+  ```
+
+  ``` shell
+  $ ./opts_demo --alpha Yes -b No --charlie
+  Alpha: Yes
+  Beta: No
+  Charlie?: FALSE
+  ```
+
+Commands:
+
+  ``` ada
+  procedure Opts_Demo is
+     use Ada;
+     use Tackle;
+
+     Commands : constant Opts.Command_List := [Opts.Cmd ("alpha", "Do alpha stuff",
+                                                         [Opts.Flag ("yes", 'y', "Yes?")]),
+                                               Opts.Cmd ("beta", "Do beta stuff",
+                                                         [Opts.Arg ("foo", 'f', "Foo!")], Passthrough => True)];
+
+     Arguments : constant Opts.Argument_List := Opts.Consume_Arguments;
+
+     Result : constant Opts.Result := Opts.Parse (Arguments, Commands);
+  begin
+     --  Help is implicit unless provided
+     if Result.Cmd = "" or else
+        Result.Has_Flag ("help")
+     then
+        Opts.Print_Usage (Result.Cmd, "opts_demo", Commands);
+
+        return;
+     end if;
+
+     if Result.Cmd = "beta" then
+        Text_IO.Put_Line ("Passthrough args: " & Result.Passthrough_Args'Image);
+     end if;
+  end Opts_Demo;
+  ```
+
+  ``` shell
+  $ ./opts_demo --help
+  Usage: opts_demo <command> [options]
+
+  Commands:
+    alpha   Do alpha stuff
+    beta    Do beta stuff
+
+  Run 'opts_demo <command> --help' for command options
+  ```
+
+  ``` shell
+  $ ./opts_demo beta --help
+  Usage: opts_demo beta [options] [-- <args>]
+
+  Options:
+    --foo, -f <foo>   Foo!
+    -- <args>         Passthrough arguments
+  ```
+
+  ``` shell
+  $ ./opts_demo beta --foo Bar -- baz qux
+  Passthrough args:
+  ["baz", "qux"]
+  ```
+
+### `Tackle.Targets`
+
+Architecture and operating system information.
 
   ``` ada
   with Ada.Text_IO;
@@ -50,8 +163,13 @@ For now, it provides these packages:
   end Demo;
   ```
 
-* `Tackle.UTF8_Strings` - UTF8 strings in Ada. Use `String` as a literal vehicle and for IO. `UTF8_String` is eagerly validated for truncated sequences, improper continuation bytes, overlong encoding, surrogate and range checks. Raises `Encoding_Error` if invalid. For now, read the package spec.
-* `Tackle.UTF8_Strings.Codepoint_Iterators` - `Ada.Containers`-like `Cursor` API to traverse `UTF8_String` codepoint by codepoint.  Example:
+### `Tackle.UTF8_Strings`
+
+UTF8 strings in Ada. Use `String` as a literal vehicle and for IO. `UTF8_String` is eagerly validated for truncated sequences, improper continuation bytes, overlong encoding, surrogate and range checks. Raises `Encoding_Error` if invalid. For now, read the package spec.
+
+### `Tackle.UTF8_Strings.Codepoint_Iterators`
+
+`Ada.Containers`-like `Cursor` API to traverse `UTF8_String` codepoint by codepoint.  Example:
 
   ``` ada
   with Ada.Text_IO;
