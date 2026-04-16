@@ -66,7 +66,7 @@ Options:
 
      Text_IO.Put_Line ("Alpha: " & Result.Arg ("alpha"));
      Text_IO.Put_Line ("Beta: " & Result.Arg ("beta"));
-     Text_IO.Put_Line ("Charlie?: " & Result.Has_Flag ("beta")'Image);
+     Text_IO.Put_Line ("Charlie?: " & Result.Has_Flag ("charlie")'Image);
   end Opts_Demo;
   ```
 
@@ -84,7 +84,7 @@ Options:
   $ ./opts_demo --alpha Yes -b No --charlie
   Alpha: Yes
   Beta: No
-  Charlie?: FALSE
+  Charlie?: TRUE
   ```
 
 Commands:
