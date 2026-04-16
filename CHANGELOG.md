@@ -1,5 +1,7 @@
 ## unreleased
 
+## 0.3.0
+
 * add `Tackle.Opts`
 
 ## 0.2.0
