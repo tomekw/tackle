@@ -32,6 +32,17 @@ package body Tackle.Targets is
       end case;
    end OS_Put_Image;
 
+   procedure Libc_Put_Image
+      (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
+       Value : Libc_Kind)
+   is
+   begin
+      case Value is
+         when Musl => Buffer.Wide_Wide_Put ("musl");
+         when Other => Buffer.Wide_Wide_Put ("other");
+      end case;
+   end Libc_Put_Image;
+
    function Init return Target is
       use Ada.Strings.Fixed;
 
@@ -60,6 +71,12 @@ package body Tackle.Targets is
          Result.Operating_System := Unknown;
       end if;
 
+      if Index (Target_Name, "musl") /= 0 then
+         Result.Libc := Musl;
+      else
+         Result.Libc := Other;
+      end if;
+
       return Result;
    end Init;
 
@@ -72,4 +89,9 @@ package body Tackle.Targets is
    begin
       return Self.Operating_System;
    end Operating_System;
+
+   function Libc (Self : Target) return Libc_Kind is
+   begin
+      return Self.Libc;
+   end Libc;
 end Tackle.Targets;

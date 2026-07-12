@@ -146,7 +146,7 @@ Commands:
 
 ### `Tackle.Targets`
 
-Architecture and operating system information.
+Architecture, operating system and libc information.
 
   ``` ada
   with Ada.Text_IO;
@@ -159,7 +159,8 @@ Architecture and operating system information.
      Target_Info : constant Targets.Target := Targets.Init;
   begin
      Text_IO.Put_Line (Target_Info.Architecture'Image); --  "x86_64"
-     Text_IO.Put_Line (Target_Info.Operating_System'Image); --  "openbsd"
+     Text_IO.Put_Line (Target_Info.Operating_System'Image); --  "linux"
+     Text_IO.Put_Line (Target_Info.Libc'Image); --  "musl"
   end Demo;
   ```
 

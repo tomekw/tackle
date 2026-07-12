@@ -1,5 +1,7 @@
 ## unreleased
 
+* allow to check libc type (`musl` or `other`)
+
 ## 0.3.0
 
 * add `Tackle.Opts`

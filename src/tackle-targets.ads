@@ -15,6 +15,12 @@ package Tackle.Targets is
       (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
        Value : Operating_System_Kind);
 
+   type Libc_Kind is (Musl, Other);
+
+   procedure Libc_Put_Image
+      (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
+       Value : Libc_Kind);
+
    type Target is private;
 
    function Init return Target;
@@ -23,10 +29,13 @@ package Tackle.Targets is
 
    function Operating_System (Self : Target) return Operating_System_Kind;
 
+   function Libc (Self : Target) return Libc_Kind;
+
 private
 
    type Target is record
       Architecture : Architecture_Kind;
       Operating_System : Operating_System_Kind;
+      Libc : Libc_Kind;
    end record;
 end Tackle.Targets;
